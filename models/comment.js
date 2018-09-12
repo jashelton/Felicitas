@@ -22,11 +22,15 @@ export default (sequelize, DataTypes) => {
       created_at: {
         type: DataTypes.DATE,
         allow_null: false
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allow_null: false
       }
     },
     {
-      underscored: true,
-      timestamps: false
+      underscored: true
+      // timestamps: false
     }
   );
 

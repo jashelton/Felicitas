@@ -1,5 +1,7 @@
 export default `
 
+  scalar Date
+
   type Suggestion {
     id: Int!
     text: String!
@@ -27,7 +29,7 @@ export default `
     city: String
     country_code: String
     region: String
-    created_at: String!
+    created_at: Date!
     user: User!
     comments: [Comment!]!
   }
@@ -47,7 +49,8 @@ export default `
     event_id: Int!
     user_id: Int!
     text: String!
-    created_at: String!
+    created_at: Date!
+    updated_at: Date!
   }
 
   type User {
@@ -59,7 +62,7 @@ export default `
     push_token: String
     profile_image: String
     facebook_id: Int
-    created_at: String
+    created_at: Date!
     events: [Event!]!
   }
 
@@ -83,11 +86,17 @@ export default `
       username: String,
       push_token: String,
       profile_image: String,
-      facebook_id: Int,
-      created_at: String,
+      facebook_id: Int
     ): User
     updateUser(username: String!, newUsername: String!): [Int!]!
     deleteUser(id: Int!): Int!
+
+    createComment(
+      event_id: Int!
+      user_id: Int!
+      text: String!
+    ): Comment
+
     createBoard(owner: Int!, name: String): Board!
     createSuggestion(creatorId: Int!, text: String, boardId: Int!): Suggestion!
   }

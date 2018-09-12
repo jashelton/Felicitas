@@ -92,6 +92,9 @@ export default {
       models.User.update({ username: newUsername }, { where: { username } }),
     deleteUser: (parent, args, { models }) =>
       models.User.destroy({ where: args }),
+
+    createComment: (parent, args, { models }) => models.Comment.create(args),
+
     createBoard: (parent, args, { models }) => models.Board.create(args),
     createSuggestion: (parent, args, { models }) =>
       models.Suggestion.create(args)
