@@ -1,20 +1,6 @@
 export default `
-
   scalar Date
-
-  type Suggestion {
-    id: Int!
-    text: String!
-    creator: User!
-  }
-
-  type Board {
-    id: Int!
-    name: String!
-    suggestions: [Suggestion!]!
-    owner: Int!
-  }
-
+  
   type Event {
     id: Int!
     user_id: Int!
@@ -66,7 +52,9 @@ export default `
     created_at: Date!
     events: [Event!]!
     following_count: Int
+    following: [User!]!
     followers_count: Int
+    followers: [User!]!
     mutual_count: Int
   }
 
@@ -83,12 +71,12 @@ export default `
     getUser(id: ID!): User!
     userEvents(user_id: ID!): [Event!]!
 
+    userFollowers(id: ID!): [User!]!
+    userFollowing(id: ID!): [User!]!
+
     allEvents: [Event!]!
     getEvent(id: ID!): Event
     eventComments(event_id: ID!): [Comment!]!
-
-    userBoards(owner: String!): [Board!]!
-    userSuggestions(creatorId: String!): [Suggestion!]!
   }
 
   type Mutation {
@@ -109,8 +97,5 @@ export default `
       user_id: Int!
       text: String!
     ): Comment
-
-    createBoard(owner: Int!, name: String): Board!
-    createSuggestion(creatorId: Int!, text: String, boardId: Int!): Suggestion!
   }
 `;

@@ -22,8 +22,6 @@ const db = {
   Event: sequelize.import("./event"),
   Comment: sequelize.import("./comment"),
   Follow: sequelize.import("./follow")
-  // Board: sequelize.import("./board"),
-  // Suggestion: sequelize.import("./suggestion")
 };
 
 Object.keys(db).forEach(modelName => {
@@ -33,6 +31,5 @@ Object.keys(db).forEach(modelName => {
 });
 
 db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
 
 export default db;

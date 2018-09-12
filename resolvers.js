@@ -1,35 +1,4 @@
 export default {
-  // User: {
-  //   boards: ({ id }, args, { models }) =>
-  //     models.Board.findAll({
-  //       where: {
-  //         owner: id
-  //       }
-  //     }),
-  //   suggestions: ({ id }, args, { models }) =>
-  //     models.Suggestion.findAll({
-  //       where: {
-  //         creatorId: id
-  //       }
-  //     })
-  // },
-  // Board: {
-  //   suggestions: ({ id }, args, { models }) =>
-  //     models.Suggestion.findAll({
-  //       where: {
-  //         boardId: id
-  //       }
-  //     })
-  // },
-  // Suggestion: {
-  //   creator: ({ creatorId }, args, { models }) =>
-  //     models.User.findOne({
-  //       where: {
-  //         id: creatorId
-  //       }
-  //     })
-  // },
-
   User: {
     events: ({ id }, args, { models }) =>
       models.Event.findAll({
@@ -39,10 +8,34 @@ export default {
       models.Follow.count({
         where: { follower_id: id }
       }),
+    following: async ({ id }, args, { models }) => {
+      const followingQuery = await models.sequelize.query(
+        `
+          select * from follows F
+          join users U on U.id = F.followed_id
+          where F.follower_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+
+      return followingQuery;
+    },
     followers_count: ({ id }, args, { models }) =>
       models.Follow.count({
         where: { followed_id: id }
       }),
+    followers: async ({ id }, args, { models }) => {
+      const followersQuery = await models.sequelize.query(
+        `
+          select * from follows F
+          join users U on U.id = F.follower_id
+          where F.followed_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+
+      return followersQuery;
+    },
     mutual_count: async ({ id }, args, { models }) => {
       const mutualQuery = await models.sequelize.query(
         `
@@ -50,19 +43,11 @@ export default {
           join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
           where F.followed_id = ${id};
         `,
-        {
-          type: models.sequelize.QueryTypes.SELECT
-        }
+        { type: models.sequelize.QueryTypes.SELECT }
       );
 
       return mutualQuery[0].mutual;
     }
-
-    // models.Follow.count({
-    //   where: {
-    //     [Op.and]: [{ id: followed }, { push_token: null }]
-    //   }
-    // })
   },
   Event: {
     user: ({ user_id }, args, { models }) =>
@@ -88,26 +73,37 @@ export default {
       models.Event.findAll({
         where: { user_id }
       }),
+    userFollowers: async (parent, { id }, { models }) => {
+      const followersQuery = await models.sequelize.query(
+        `
+          select * from follows F
+          join users U on U.id = F.follower_id
+          where F.followed_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+
+      return followersQuery;
+    },
+    userFollowing: async (parent, { id }, { models }) => {
+      const followingQuery = await models.sequelize.query(
+        `
+          select * from follows F
+          join users U on U.id = F.followed_id
+          where F.follower_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+
+      return followingQuery;
+    },
     allEvents: (parent, args, { models }) => models.Event.findAll(),
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
 
     eventComments: (parent, { event_id }, { models }) =>
       models.Comment.findAll({ where: { event_id } })
-    // userBoards: (parent, { owner }, { models }) =>
-    //   models.Board.findAll({
-    //     where: {
-    //       owner,
-    //     },
-    //   }),
-    // userSuggestions: (parent, { creatorId }, { models }) =>
-    //   models.Suggestion.findAll({
-    //     where: {
-    //       creatorId,
-    //     },
-    //   }),
   },
-
   Mutation: {
     createUser: (parent, args, { models }) => models.User.create(args),
     updateUser: (parent, { username, newUsername }, { models }) =>
@@ -115,10 +111,6 @@ export default {
     deleteUser: (parent, args, { models }) =>
       models.User.destroy({ where: args }),
 
-    createComment: (parent, args, { models }) => models.Comment.create(args),
-
-    createBoard: (parent, args, { models }) => models.Board.create(args),
-    createSuggestion: (parent, args, { models }) =>
-      models.Suggestion.create(args)
+    createComment: (parent, args, { models }) => models.Comment.create(args)
   }
 };

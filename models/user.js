@@ -29,7 +29,6 @@ export default (sequelize, DataTypes) => {
 
   User.associate = models => {
     models.Event.belongsTo(User);
-    // User.hasMany(models.Follow);
     //   User.belongsToMany(models.User, {
     //     through: models.Follow,
     //     foreignKey: "followed_id",
@@ -44,7 +43,7 @@ export default (sequelize, DataTypes) => {
     // };
 
     // User.associate = models => {
-    //   // 1 to many with board
+    //   // 1 to many with Event
     //   User.hasMany(models.Event);
     //   // User.hasMany(models.Follow);
   };
