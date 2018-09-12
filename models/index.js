@@ -19,7 +19,8 @@ const sequelize = new Sequelize(
 
 const db = {
   User: sequelize.import("./user"),
-  Event: sequelize.import("./event")
+  Event: sequelize.import("./event"),
+  Comment: sequelize.import("./comment")
   // Board: sequelize.import("./board"),
   // Suggestion: sequelize.import("./suggestion")
 };

@@ -1,32 +1,32 @@
-export default (sequelize, type) => {
+export default (sequelize, DataTypes) => {
   const Event = sequelize.define(
     "Event",
     {
       id: {
-        type: type.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
       user_id: {
-        type: type.INTEGER,
+        type: DataTypes.INTEGER,
         allow_null: false
       },
       event_type: {
-        type: type.ENUM("moment", "vibe"),
+        type: DataTypes.ENUM("moment", "vibe"),
         allow_null: false
       },
-      description: type.STRING,
-      active: type.BOOLEAN,
-      privacy: type.ENUM("public", "private"),
-      latitude: type.DECIMAL(10, 6),
-      longitude: type.DECIMAL(10, 6),
-      title: type.STRING,
-      image: type.STRING,
-      city: type.STRING,
-      country_code: type.STRING,
-      region: type.STRING,
+      description: DataTypes.STRING,
+      active: DataTypes.BOOLEAN,
+      privacy: DataTypes.ENUM("public", "private"),
+      latitude: DataTypes.DECIMAL(10, 6),
+      longitude: DataTypes.DECIMAL(10, 6),
+      title: DataTypes.STRING,
+      image: DataTypes.STRING,
+      city: DataTypes.STRING,
+      country_code: DataTypes.STRING,
+      region: DataTypes.STRING,
       created_at: {
-        type: type.DATE,
+        type: DataTypes.DATE,
         allow_null: false
       }
     },
@@ -39,6 +39,7 @@ export default (sequelize, type) => {
   Event.associate = models => {
     // 1 to many with Event
     Event.belongsTo(models.User);
+    Event.hasMany(models.Comment);
   };
 
   return Event;

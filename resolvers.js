@@ -44,6 +44,12 @@ export default {
         where: {
           id: user_id
         }
+      }),
+    comments: ({ id }, args, { models }) =>
+      models.Comment.findAll({
+        where: {
+          event_id: id
+        }
       })
   },
   Query: {
@@ -62,7 +68,10 @@ export default {
       }),
     allEvents: (parent, args, { models }) => models.Event.findAll(),
     getEvent: (parent, { id }, { models }) =>
-      models.User.findOne({ where: { id } })
+      models.User.findOne({ where: { id } }),
+
+    eventComments: (parent, { event_id }, { models }) =>
+      models.Comment.findAll({ where: { event_id } })
     // userBoards: (parent, { owner }, { models }) =>
     //   models.Board.findAll({
     //     where: {

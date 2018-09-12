@@ -29,6 +29,7 @@ export default `
     region: String
     created_at: String!
     user: User!
+    comments: [Comment!]!
   }
 
   enum Privacy {
@@ -39,6 +40,14 @@ export default `
   enum EventType {
     moment
     vibe
+  }
+
+  type Comment {
+    id: Int!
+    event_id: Int!
+    user_id: Int!
+    text: String!
+    created_at: String!
   }
 
   type User {
@@ -60,6 +69,7 @@ export default `
     userEvents(user_id: ID!): [Event!]!
     allEvents: [Event!]!
     getEvent(id: ID!): Event
+    eventComments(event_id: ID!): [Comment!]!
 
     userBoards(owner: String!): [Board!]!
     userSuggestions(creatorId: String!): [Suggestion!]!
