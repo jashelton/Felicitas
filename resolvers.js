@@ -9,7 +9,7 @@ export default {
         where: { follower_id: id }
       }),
     following: async ({ id }, args, { models }) => {
-      const followingQuery = await models.sequelize.query(
+      return await models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.followed_id
@@ -17,15 +17,13 @@ export default {
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );
-
-      return followingQuery;
     },
     followers_count: ({ id }, args, { models }) =>
       models.Follow.count({
         where: { followed_id: id }
       }),
     followers: async ({ id }, args, { models }) => {
-      const followersQuery = await models.sequelize.query(
+      return await models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.follower_id
@@ -33,8 +31,6 @@ export default {
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );
-
-      return followersQuery;
     },
     mutual_count: async ({ id }, args, { models }) => {
       const mutualQuery = await models.sequelize.query(
@@ -61,6 +57,10 @@ export default {
     comments_count: ({ id }, args, { models }) =>
       models.Comment.count({
         where: { event_id: id }
+      }),
+    likes_count: ({ id }, args, { models }) =>
+      models.Like.count({
+        where: { event_id: id }
       })
   },
   Query: {
@@ -74,7 +74,7 @@ export default {
         where: { user_id }
       }),
     userFollowers: async (parent, { id }, { models }) => {
-      const followersQuery = await models.sequelize.query(
+      return await models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.follower_id
@@ -82,11 +82,9 @@ export default {
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );
-
-      return followersQuery;
     },
     userFollowing: async (parent, { id }, { models }) => {
-      const followingQuery = await models.sequelize.query(
+      return await models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.followed_id
@@ -94,15 +92,23 @@ export default {
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );
-
-      return followingQuery;
     },
     allEvents: (parent, args, { models }) => models.Event.findAll(),
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
 
     eventComments: (parent, { event_id }, { models }) =>
-      models.Comment.findAll({ where: { event_id } })
+      models.Comment.findAll({ where: { event_id } }),
+    eventLikes: async (parent, { event_id }, { models }) => {
+      return await models.sequelize.query(
+        `
+          select * from likes L
+          join users U on U.id = L.liked_by_id
+          where L.event_id = ${event_id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+    }
   },
   Mutation: {
     createUser: (parent, args, { models }) => models.User.create(args),

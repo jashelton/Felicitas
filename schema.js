@@ -1,6 +1,6 @@
 export default `
   scalar Date
-  
+
   type Event {
     id: Int!
     user_id: Int!
@@ -19,6 +19,7 @@ export default `
     user: User!
     comments_count: Int
     comments: [Comment!]!
+    likes_count: Int!
   }
 
   enum Privacy {
@@ -66,6 +67,14 @@ export default `
     updated_at: Date!
   }
 
+  type Like {
+    id: Int!
+    event_id: Int!
+    liked_by_id: Int!
+    created_at: Date!
+    updated_at: Date!
+  }
+
   type Query {
     allUsers: [User!]!
     getUser(id: ID!): User!
@@ -77,6 +86,7 @@ export default `
     allEvents: [Event!]!
     getEvent(id: ID!): Event
     eventComments(event_id: ID!): [Comment!]!
+    eventLikes(event_id: ID!): [User!]!
   }
 
   type Mutation {

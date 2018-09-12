@@ -21,7 +21,8 @@ const db = {
   User: sequelize.import("./user"),
   Event: sequelize.import("./event"),
   Comment: sequelize.import("./comment"),
-  Follow: sequelize.import("./follow")
+  Follow: sequelize.import("./follow"),
+  Like: sequelize.import("./like")
 };
 
 Object.keys(db).forEach(modelName => {
