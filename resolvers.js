@@ -42,7 +42,27 @@ export default {
     followers_count: ({ id }, args, { models }) =>
       models.Follow.count({
         where: { followed_id: id }
-      })
+      }),
+    mutual_count: async ({ id }, args, { models }) => {
+      const mutualQuery = await models.sequelize.query(
+        `
+          select count(F.id) as mutual from follows F
+          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          where F.followed_id = ${id};
+        `,
+        {
+          type: models.sequelize.QueryTypes.SELECT
+        }
+      );
+
+      return mutualQuery[0].mutual;
+    }
+
+    // models.Follow.count({
+    //   where: {
+    //     [Op.and]: [{ id: followed }, { push_token: null }]
+    //   }
+    // })
   },
   Event: {
     user: ({ user_id }, args, { models }) =>
@@ -51,6 +71,10 @@ export default {
       }),
     comments: ({ id }, args, { models }) =>
       models.Comment.findAll({
+        where: { event_id: id }
+      }),
+    comments_count: ({ id }, args, { models }) =>
+      models.Comment.count({
         where: { event_id: id }
       })
   },
@@ -66,7 +90,7 @@ export default {
       }),
     allEvents: (parent, args, { models }) => models.Event.findAll(),
     getEvent: (parent, { id }, { models }) =>
-      models.User.findOne({ where: { id } }),
+      models.Event.findOne({ where: { id } }),
 
     eventComments: (parent, { event_id }, { models }) =>
       models.Comment.findAll({ where: { event_id } })

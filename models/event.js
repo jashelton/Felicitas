@@ -36,11 +36,11 @@ export default (sequelize, DataTypes) => {
     }
   );
 
-  Event.associate = models => {
-    // 1 to many with Event
-    Event.belongsTo(models.User);
-    Event.hasMany(models.Comment);
-  };
+  // Event.associate = models => {
+  //   // 1 to many with Event
+  //   Event.belongsTo(models.User);
+  //   Event.hasMany(models.Comment);
+  // };
 
   return Event;
 };

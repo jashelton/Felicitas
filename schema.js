@@ -31,6 +31,7 @@ export default `
     region: String
     created_at: Date!
     user: User!
+    comments_count: Int
     comments: [Comment!]!
   }
 
@@ -66,6 +67,7 @@ export default `
     events: [Event!]!
     following_count: Int
     followers_count: Int
+    mutual_count: Int
   }
 
   type Follow {
