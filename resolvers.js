@@ -61,7 +61,20 @@ export default {
     likes_count: ({ id }, args, { models }) =>
       models.Like.count({
         where: { event_id: id }
-      })
+      }),
+    avg_rating: async ({ id }, args, { models }) => {
+      const test = await models.Rating.findAll({
+        attributes: [
+          [
+            models.sequelize.fn("AVG", models.sequelize.col("value")),
+            "avg_rating"
+          ]
+        ],
+        where: { event_id: id }
+      });
+
+      return test[0].dataValues.avg_rating;
+    }
   },
   Query: {
     allUsers: (parent, args, { models }) => models.User.findAll(),

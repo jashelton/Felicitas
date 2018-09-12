@@ -22,7 +22,8 @@ const db = {
   Event: sequelize.import("./event"),
   Comment: sequelize.import("./comment"),
   Follow: sequelize.import("./follow"),
-  Like: sequelize.import("./like")
+  Like: sequelize.import("./like"),
+  Rating: sequelize.import("./rating")
 };
 
 Object.keys(db).forEach(modelName => {

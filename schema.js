@@ -20,6 +20,7 @@ export default `
     comments_count: Int
     comments: [Comment!]!
     likes_count: Int!
+    avg_rating: Float
   }
 
   enum Privacy {
@@ -71,6 +72,15 @@ export default `
     id: Int!
     event_id: Int!
     liked_by_id: Int!
+    created_at: Date!
+    updated_at: Date!
+  }
+
+  type Rating {
+    id: Int!
+    user_id: Int!
+    event_id: Int!
+    value: Int
     created_at: Date!
     updated_at: Date!
   }
