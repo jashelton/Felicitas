@@ -64,12 +64,23 @@ export default `
     facebook_id: Int
     created_at: Date!
     events: [Event!]!
+    following_count: Int
+    followers_count: Int
+  }
+
+  type Follow {
+    id: Int!
+    followed_id: Int!
+    follower_id: Int!
+    created_at: Date!
+    updated_at: Date!
   }
 
   type Query {
     allUsers: [User!]!
-    getUser(id: ID!): User
+    getUser(id: ID!): User!
     userEvents(user_id: ID!): [Event!]!
+
     allEvents: [Event!]!
     getEvent(id: ID!): Event
     eventComments(event_id: ID!): [Comment!]!

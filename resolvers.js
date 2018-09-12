@@ -33,38 +33,36 @@ export default {
   User: {
     events: ({ id }, args, { models }) =>
       models.Event.findAll({
-        where: {
-          user_id: id
-        }
+        where: { user_id: id }
+      }),
+    following_count: ({ id }, args, { models }) =>
+      models.Follow.count({
+        where: { follower_id: id }
+      }),
+    followers_count: ({ id }, args, { models }) =>
+      models.Follow.count({
+        where: { followed_id: id }
       })
   },
   Event: {
     user: ({ user_id }, args, { models }) =>
       models.User.findOne({
-        where: {
-          id: user_id
-        }
+        where: { id: user_id }
       }),
     comments: ({ id }, args, { models }) =>
       models.Comment.findAll({
-        where: {
-          event_id: id
-        }
+        where: { event_id: id }
       })
   },
   Query: {
     allUsers: (parent, args, { models }) => models.User.findAll(),
     getUser: (parent, { id }, { models }) =>
       models.User.findOne({
-        where: {
-          id
-        }
+        where: { id }
       }),
     userEvents: (parent, { user_id }, { models }) =>
       models.Event.findAll({
-        where: {
-          user_id
-        }
+        where: { user_id }
       }),
     allEvents: (parent, args, { models }) => models.Event.findAll(),
     getEvent: (parent, { id }, { models }) =>

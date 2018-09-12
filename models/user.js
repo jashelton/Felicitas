@@ -28,8 +28,25 @@ export default (sequelize, DataTypes) => {
   );
 
   User.associate = models => {
-    // 1 to many with board
-    User.hasMany(models.Event);
+    models.Event.belongsTo(User);
+    // User.hasMany(models.Follow);
+    //   User.belongsToMany(models.User, {
+    //     through: models.Follow,
+    //     foreignKey: "followed_id",
+    //     as: "following"
+    //   });
+
+    //   User.belongsToMany(models.User, {
+    //     through: models.Follow,
+    //     foreignKey: "follower_id",
+    //     as: "followers"
+    //   });
+    // };
+
+    // User.associate = models => {
+    //   // 1 to many with board
+    //   User.hasMany(models.Event);
+    //   // User.hasMany(models.Follow);
   };
 
   return User;
