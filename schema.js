@@ -1,5 +1,6 @@
 export default `
   scalar Date
+  scalar BigInt
 
   type Event {
     id: Int!
@@ -50,7 +51,7 @@ export default `
     username: String
     push_token: String
     profile_image: String
-    facebook_id: Int
+    facebook_id: String!
     created_at: Date!
     events: [Event!]!
     following_count: Int
@@ -58,6 +59,7 @@ export default `
     followers_count: Int
     followers: [User!]!
     mutual_count: Int
+    jwt: String!
   }
 
   type Follow {
@@ -88,6 +90,7 @@ export default `
   type Query {
     allUsers: [User!]!
     getUser(id: ID!): User!
+    facebookUser(id: ID!): User!
     userEvents(user_id: ID!): [Event!]!
 
     userFollowers(id: ID!): [User!]!
@@ -107,7 +110,7 @@ export default `
       username: String,
       push_token: String,
       profile_image: String,
-      facebook_id: Int
+      facebook_id: String!
     ): User
     updateUser(username: String!, newUsername: String!): [Int!]!
     deleteUser(id: Int!): Int!

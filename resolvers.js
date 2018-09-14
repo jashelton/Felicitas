@@ -1,3 +1,6 @@
+import jwt from "jsonwebtoken";
+require("dotenv").config();
+
 export default {
   User: {
     events: ({ id }, args, { models }) =>
@@ -82,6 +85,29 @@ export default {
       models.User.findOne({
         where: { id }
       }),
+    facebookUser: async (parent, { id }, { models }) => {
+      const { dataValues } = await models.User.findOne({
+        where: { facebook_id: id }
+      });
+
+      console.log(dataValues);
+
+      if (dataValues) {
+        const data = dataValues;
+        const token = jwt.sign(
+          {
+            id: dataValues.id,
+            fb_id: dataValues.facebook_id
+          },
+          process.env.JWT_SECRET
+        );
+
+        dataValues.jwt = token;
+        console.log(dataValues);
+        return dataValues;
+      }
+      return { message: "There is no user." };
+    },
     userEvents: (parent, { user_id }, { models }) =>
       models.Event.findAll({
         where: { user_id }

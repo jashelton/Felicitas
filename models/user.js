@@ -13,7 +13,10 @@ export default (sequelize, DataTypes) => {
       username: DataTypes.STRING,
       push_token: DataTypes.STRING,
       profile_image: DataTypes.STRING,
-      facebook_id: DataTypes.BIGINT,
+      facebook_id: {
+        type: DataTypes.INTEGER,
+        allow_null: false
+      },
       created_at: DataTypes.DATE
     },
     {
@@ -28,24 +31,19 @@ export default (sequelize, DataTypes) => {
   );
 
   User.associate = models => {
-    models.Event.belongsTo(User);
+    // models.Event.belongsTo(User);
+    // User.hasMany(models.Event);
     //   User.belongsToMany(models.User, {
     //     through: models.Follow,
     //     foreignKey: "followed_id",
     //     as: "following"
     //   });
-
     //   User.belongsToMany(models.User, {
     //     through: models.Follow,
     //     foreignKey: "follower_id",
     //     as: "followers"
     //   });
     // };
-
-    // User.associate = models => {
-    //   // 1 to many with Event
-    //   User.hasMany(models.Event);
-    //   // User.hasMany(models.Follow);
   };
 
   return User;
