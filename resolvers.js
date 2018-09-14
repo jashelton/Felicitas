@@ -132,7 +132,13 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     },
-    allEvents: (parent, args, { models }) => models.Event.findAll(),
+    allEvents: (parent, { offset }, { models }) => {
+      return models.Event.findAll({
+        order: models.sequelize.literal("created_at DESC"),
+        limit: 5,
+        offset
+      });
+    },
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
 

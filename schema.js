@@ -96,7 +96,7 @@ export default `
     userFollowers(id: ID!): [User!]!
     userFollowing(id: ID!): [User!]!
 
-    allEvents: [Event!]!
+    allEvents(offset: Int!): [Event!]!
     getEvent(id: ID!): Event
     eventComments(event_id: ID!): [Comment!]!
     eventLikes(event_id: ID!): [User!]!

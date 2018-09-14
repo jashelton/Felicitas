@@ -10,6 +10,11 @@ import models from "./models";
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers
+  // context: ({ req }) => {
+  //   const token = req.headers.authorization || '';
+  //   const user = getUser(token);
+  //   return { user };
+  // }
 });
 
 const app = express();
