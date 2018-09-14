@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { AuthenticationError } from "apollo-server";
 require("dotenv").config();
 
 export default {
@@ -90,8 +91,6 @@ export default {
         where: { facebook_id: id }
       });
 
-      console.log(dataValues);
-
       if (dataValues) {
         const data = dataValues;
         const token = jwt.sign(
@@ -103,7 +102,6 @@ export default {
         );
 
         dataValues.jwt = token;
-        console.log(dataValues);
         return dataValues;
       }
       return { message: "There is no user." };
@@ -132,7 +130,8 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     },
-    allEvents: (parent, { offset }, { models }) => {
+    allEvents: (parent, { offset }, { models, user }) => {
+      if (!user) throw new Error("Unauthorized!");
       return models.Event.findAll({
         order: models.sequelize.literal("created_at DESC"),
         limit: 5,

@@ -1,35 +1,28 @@
-import express from "express";
-import bodyParser from "body-parser";
-import { graphiqlExpress, graphqlExpress } from "graphql-server-express";
-import { makeExecutableSchema } from "graphql-tools";
+import { ApolloServer } from "apollo-server";
+import jwt from "jsonwebtoken";
 
 import typeDefs from "./schema";
 import resolvers from "./resolvers";
 import models from "./models";
 
-const schema = makeExecutableSchema({
+const server = new ApolloServer({
   typeDefs,
-  resolvers
-  // context: ({ req }) => {
-  //   const token = req.headers.authorization || '';
-  //   const user = getUser(token);
-  //   return { user };
-  // }
+  resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization || null;
+    let user;
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+        if (err) user = undefined;
+        user = decode;
+      });
+    } else {
+      user = undefined;
+    }
+    return Object.assign({}, { models }, { user });
+  }
 });
 
-const app = express();
-
-app.use(
-  "/graphiql",
-  graphiqlExpress({
-    endpointURL: "/graphql"
-  })
-);
-
-app.use(
-  "/graphql",
-  bodyParser.json(),
-  graphqlExpress({ schema, context: { models } })
-);
-
-models.sequelize.sync().then(() => app.listen(3000));
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
