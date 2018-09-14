@@ -67,7 +67,7 @@ export default {
         where: { event_id: id }
       }),
     avg_rating: async ({ id }, args, { models }) => {
-      const test = await models.Rating.findAll({
+      const data = await models.Rating.findAll({
         attributes: [
           [
             models.sequelize.fn("AVG", models.sequelize.col("value")),
@@ -77,7 +77,17 @@ export default {
         where: { event_id: id }
       });
 
-      return test[0].dataValues.avg_rating;
+      return data[0].dataValues.avg_rating;
+    },
+    current_user_rating: async ({ id }, args, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      const data = await models.Rating.findOne({
+        attributes: ["value"],
+        where: { event_id: id, user_id: user.id }
+      });
+
+      return data ? data.dataValues.value : null;
     }
   },
   Query: {
@@ -131,10 +141,10 @@ export default {
       );
     },
     allEvents: (parent, { offset }, { models, user }) => {
-      if (!user) throw new Error("Unauthorized!");
+      if (!user) throw new AuthenticationError("Unauthorized!");
       return models.Event.findAll({
         order: models.sequelize.literal("created_at DESC"),
-        limit: 5,
+        limit: 20,
         offset
       });
     },

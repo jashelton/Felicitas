@@ -22,6 +22,7 @@ export default `
     comments: [Comment!]!
     likes_count: Int!
     avg_rating: Float
+    current_user_rating: Int
   }
 
   enum Privacy {
