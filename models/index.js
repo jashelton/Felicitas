@@ -8,6 +8,7 @@ const sequelize = new Sequelize(
   {
     host: "localhost",
     dialect: "mysql",
+    define: { underscored: true },
     pool: {
       max: 10,
       min: 0,

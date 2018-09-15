@@ -31,6 +31,11 @@ export default (sequelize, DataTypes) => {
   );
 
   User.associate = models => {
+    User.hasMany(models.Event);
+    User.hasMany(models.Comment);
+    // User.belongsTo(models.Comment);
+    // User.hasMany(models.Comment, { foreignKey: "id" });
+    // User.hasMany(models.Comment);
     // models.Event.belongsTo(User);
     // User.hasMany(models.Event);
     //   User.belongsToMany(models.User, {

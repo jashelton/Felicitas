@@ -31,16 +31,14 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      underscored: true,
       timestamps: false
     }
   );
 
   Event.associate = models => {
-    // 1 to many with Event
     Event.belongsTo(models.User);
     Event.hasMany(models.Comment);
-    Event.hasMany(models.Like);
+    // 1 to many with Event
   };
 
   return Event;

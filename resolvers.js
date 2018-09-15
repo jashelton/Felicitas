@@ -54,10 +54,12 @@ export default {
       models.User.findOne({
         where: { id: user_id }
       }),
-    comments: ({ id }, args, { models }) =>
-      models.Comment.findAll({
-        where: { event_id: id }
-      }),
+    // comments: ({ id }, args, { models }) =>
+    //   models.Comment.findAll({
+    //     include: [models.User],
+    //     attributes: ["*"],
+    //     where: { event_id: id }
+    //   }),
     comments_count: ({ id }, args, { models }) =>
       models.Comment.count({
         where: { event_id: id }
@@ -90,12 +92,15 @@ export default {
       return data ? data.dataValues.value : null;
     }
   },
+  // Comment: {
+  //   user: ({ user }, args, context) => {
+  //     if (user) return user;
+  //   }
+  // },
   Query: {
     allUsers: (parent, args, { models }) => models.User.findAll(),
     getUser: (parent, { id }, { models }) =>
-      models.User.findOne({
-        where: { id }
-      }),
+      models.User.findOne({ where: { id } }),
     facebookUser: async (parent, { id }, { models }) => {
       const { dataValues } = await models.User.findOne({
         where: { facebook_id: id }
@@ -118,7 +123,8 @@ export default {
     },
     userEvents: (parent, { user_id }, { models }) =>
       models.Event.findAll({
-        where: { user_id }
+        where: { user_id },
+        raw: true
       }),
     userFollowers: async (parent, { id }, { models }) => {
       return await models.sequelize.query(
@@ -142,6 +148,7 @@ export default {
     },
     allEvents: (parent, { offset }, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.Event.findAll({
         order: models.sequelize.literal("created_at DESC"),
         limit: 20,

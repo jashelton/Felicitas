@@ -39,9 +39,10 @@ export default `
     id: Int!
     event_id: Int!
     user_id: Int!
-    text: String!
-    created_at: Date!
-    updated_at: Date!
+    text: String
+    created_at: Date
+    updated_at: Date
+    user: User
   }
 
   type User {
