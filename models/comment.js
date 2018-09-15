@@ -29,6 +29,7 @@ export default (sequelize, DataTypes) => {
 
   Comment.associate = models => {
     Comment.belongsTo(models.Event);
+    Comment.hasOne(models.User, { foreignKey: "id" });
   };
 
   return Comment;

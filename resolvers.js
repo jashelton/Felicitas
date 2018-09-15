@@ -92,11 +92,10 @@ export default {
       return data ? data.dataValues.value : null;
     }
   },
-  // Comment: {
-  //   user: ({ user }, args, context) => {
-  //     if (user) return user;
-  //   }
-  // },
+  Comment: {
+    comment_user: ({ user_id }, args, { models }) =>
+      models.User.findById(user_id)
+  },
   Query: {
     allUsers: (parent, args, { models }) => models.User.findAll(),
     getUser: (parent, { id }, { models }) =>
@@ -158,8 +157,11 @@ export default {
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
 
-    eventComments: (parent, { event_id }, { models }) =>
-      models.Comment.findAll({ where: { event_id } }),
+    eventComments: async (parent, { event_id }, { models }) =>
+      models.sequelize.query(
+        `select * from comments where event_id = ${event_id};`,
+        { type: models.sequelize.QueryTypes.SELECT }
+      ),
     eventLikes: async (parent, { event_id }, { models }) => {
       return await models.sequelize.query(
         `

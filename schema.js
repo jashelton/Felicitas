@@ -42,7 +42,7 @@ export default `
     text: String
     created_at: Date
     updated_at: Date
-    user: User
+    comment_user: User
   }
 
   type User {
