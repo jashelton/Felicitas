@@ -1,35 +1,35 @@
 export default (sequelize, DataTypes) => {
   const Comment = sequelize.define("Comment", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       primaryKey: true,
       autoIncrement: true
     },
     event_id: {
-      type: DataTypes.INTEGER,
-      allow_null: false
+      type: DataTypes.INTEGER(11),
+      allow_null: false,
+      references: {
+        model: "Events",
+        key: "id"
+      }
     },
     user_id: {
-      type: DataTypes.INTEGER,
-      allow_null: false
+      type: DataTypes.INTEGER(11),
+      allow_null: false,
+      references: {
+        model: "Users",
+        key: "id"
+      }
     },
     text: {
       type: DataTypes.STRING,
-      allow_null: false
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allow_null: false
-    },
-    updated_at: {
-      type: DataTypes.DATE,
       allow_null: false
     }
   });
 
   Comment.associate = models => {
     Comment.belongsTo(models.Event);
-    Comment.hasOne(models.User, { foreignKey: "id" });
+    Comment.belongsTo(models.User);
   };
 
   return Comment;

@@ -71,5 +71,12 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     }
+  },
+  Mutation: {
+    deleteEvent: (parent, { id }, { models, user }) =>
+      models.Event.destroy({
+        where: { id, user_id: user.id },
+        cascade: true
+      })
   }
 };

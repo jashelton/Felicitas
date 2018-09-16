@@ -3,7 +3,7 @@ export default (sequelize, DataTypes) => {
     "User",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(11),
         primaryKey: true,
         autoIncrement: true
       },
@@ -14,14 +14,11 @@ export default (sequelize, DataTypes) => {
       push_token: DataTypes.STRING,
       profile_image: DataTypes.STRING,
       facebook_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allow_null: false
-      },
-      created_at: DataTypes.DATE
+      }
     },
     {
-      underscored: true,
-      timestamps: false,
       getterMethods: {
         name() {
           return `${this.get("first_name")} ${this.get("last_name")}`;

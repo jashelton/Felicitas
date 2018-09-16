@@ -9,6 +9,7 @@ export default `
     profile_image: String
     facebook_id: String!
     created_at: Date!
+    updated_at: Date!
     events: [Event!]!
     following_count: Int
     following: [User!]!

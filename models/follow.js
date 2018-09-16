@@ -1,27 +1,33 @@
 export default (sequelize, DataTypes) => {
   const Follow = sequelize.define("Follow", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       primaryKey: true,
       autoIncrement: true
     },
     followed_id: {
-      type: DataTypes.INTEGER,
-      allow_null: false
+      type: DataTypes.INTEGER(11),
+      allow_null: false,
+      references: {
+        model: "Users",
+        key: "id"
+      }
     },
     follower_id: {
-      type: DataTypes.INTEGER,
-      allow_null: false
+      type: DataTypes.INTEGER(11),
+      allow_null: false,
+      references: {
+        model: "Users",
+        key: "id"
+      }
     },
-    following: DataTypes.BOOLEAN,
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE
+    following: DataTypes.BOOLEAN
   });
 
-  // Follow.associate = models => {
-  //   // 1 to many with Follow
-  //   Follow.belongsTo(models.User, { foreignKey: "followed_id" });
-  // };
+  Follow.associate = models => {
+    Follow.belongsTo(models.User, { foreignKey: "followed_id" });
+    Follow.belongsTo(models.User, { foreignKey: "follower_id" });
+  };
 
   return Follow;
 };

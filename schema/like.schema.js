@@ -10,4 +10,9 @@ export default `
   type Query {
     eventLikes(event_id: ID!): [User!]!
   }
+
+  type Mutation {
+    createLike(event_id: ID!): Boolean!
+    deleteLike(event_id: ID!): Boolean!
+  }
 `;

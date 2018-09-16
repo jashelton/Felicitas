@@ -4,7 +4,6 @@ export default `
     user_id: Int!
     event_type: EventType
     description: String
-    active: Boolean
     privacy: Privacy
     latitude: Float
     longitude: Float
@@ -14,6 +13,7 @@ export default `
     country_code: String
     region: String
     created_at: Date!
+    updated_at: Date!
     user: User!
     comments_count: Int
     comments: [Comment!]!
@@ -35,5 +35,9 @@ export default `
   type Query {
     allEvents(offset: Int!): [Event!]!
     getEvent(id: ID!): Event
+  }
+
+  type Mutation {
+    deleteEvent(id: ID!): Boolean!
   }
 `;
