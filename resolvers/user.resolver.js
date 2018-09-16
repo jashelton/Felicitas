@@ -58,7 +58,6 @@ export default {
       });
 
       if (dataValues) {
-        const data = dataValues;
         const token = jwt.sign(
           {
             id: dataValues.id,

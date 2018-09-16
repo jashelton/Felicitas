@@ -40,7 +40,27 @@ sequelize.sync({ force: true }).then(() => {
   db.User.create({
     first_name: "Justin",
     last_name: "Shelton",
-    facebook_id: 10216754142308209
+    facebook_id: "10216754142308209"
+  }).then(({ dataValues }) => {
+    db.Event.create({
+      user_id: dataValues.id,
+      event_type: "vibe",
+      description: "This is a new Vibe",
+      privacy: "Public"
+    }).then(({ dataValues }) => {
+      db.Event.create({
+        user_id: dataValues.user_id,
+        event_type: "moment",
+        description: "This is a new moment with a test image.",
+        privacy: "Public",
+        latitude: 35.945075,
+        longitude: -78.847563,
+        image: "http://www.gstatic.com/webp/gallery/1.jpg",
+        city: "Durham",
+        country_code: "US",
+        region: "NC"
+      });
+    });
   });
 });
 

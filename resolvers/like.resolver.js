@@ -8,7 +8,8 @@ export default {
 
         if (exists) throw new Error("User has already liked this event.");
 
-        return models.Like.create({ event_id, liked_by_id: user.id });
+        await models.Like.create({ event_id, liked_by_id: user.id });
+        return models.Event.findById(event_id);
       } catch (err) {
         throw new Error(err);
       }
