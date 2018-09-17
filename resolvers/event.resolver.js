@@ -83,6 +83,11 @@ export default {
       models.Event.destroy({
         where: { id, user_id: user.id },
         cascade: true
-      })
+      }),
+    createVibe: (parent, { description }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      return models.Event.create({ description, user_id: user.id });
+    }
   }
 };
