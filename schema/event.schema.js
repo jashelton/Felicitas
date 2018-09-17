@@ -5,8 +5,7 @@ export default `
     event_type: EventType
     description: String
     privacy: Privacy
-    latitude: Float
-    longitude: Float
+    coordinate: Coordinate
     title: String
     image: String
     city: String
@@ -22,6 +21,11 @@ export default `
     current_user_rating: Int
   }
 
+  type Coordinate {
+    latitude: Float
+    longitude: Float
+  }
+
   enum Privacy {
     public
     private
@@ -33,7 +37,7 @@ export default `
   }
 
   type Query {
-    allEvents(offset: Int!): [Event!]!
+    allEvents(offset: Int, event_type: String): [Event!]!
     getEvent(id: ID!): Event
   }
 

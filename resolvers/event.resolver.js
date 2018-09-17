@@ -39,14 +39,26 @@ export default {
     }
   },
   Query: {
-    allEvents: (parent, { offset }, { models, user }) => {
+    allEvents: async (parent, { offset, event_type }, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
-      return models.Event.findAll({
+      const events = await models.Event.findAll({
         order: models.sequelize.literal("created_at DESC"),
         limit: 20,
-        offset
+        offset,
+        where: event_type ? { event_type } : null
       });
+
+      events.map(event => {
+        if (event.event_type === "moment") {
+          event.coordinate = {
+            latitude: event.latitude,
+            longitude: event.longitude
+          };
+        }
+      });
+
+      return events;
     },
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
