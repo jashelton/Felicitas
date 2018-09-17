@@ -49,7 +49,16 @@ export default {
     }
   },
   Query: {
-    allUsers: (parent, args, { models }) => models.User.findAll(),
+    allUsers: (parent, { name }, { models }) => {
+      return models.sequelize.query(
+        `
+          select *
+          from users
+          where concat(first_name, ' ', last_name) rlike '${name}';
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+    },
     getUser: (parent, { id }, { models }) =>
       models.User.findOne({ where: { id } }),
     facebookUser: async (parent, { id }, { models }) => {

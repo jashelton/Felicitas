@@ -20,7 +20,7 @@ export default `
   }
 
   type Query {
-    allUsers: [User!]!
+    allUsers(name: String): [User!]!
     getUser(id: ID!): User!
     facebookUser(id: ID!): User!
     userEvents(user_id: ID!): [Event!]!
