@@ -87,7 +87,11 @@ export default {
     createVibe: (parent, { description }, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
-      return models.Event.create({ description, user_id: user.id });
+      return models.Event.create({
+        description,
+        event_type: "vibe",
+        user_id: user.id
+      });
     }
   }
 };
