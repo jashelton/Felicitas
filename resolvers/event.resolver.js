@@ -6,12 +6,6 @@ export default {
       models.User.findOne({
         where: { id: user_id }
       }),
-    // comments: ({ id }, args, { models }) =>
-    //   models.Comment.findAll({
-    //     include: [models.User],
-    //     attributes: ["*"],
-    //     where: { event_id: id }
-    //   }),
     comments_count: ({ id }, args, { models }) =>
       models.Comment.count({
         where: { event_id: id }

@@ -15,8 +15,7 @@ export default `
 
   type Mutation {
     createComment(
-      event_id: Int!
-      user_id: Int!
+      event_id: ID!
       text: String!
     ): Comment
   }
