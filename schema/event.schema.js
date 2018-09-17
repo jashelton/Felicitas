@@ -43,6 +43,6 @@ export default `
 
   type Mutation {
     deleteEvent(id: ID!): Boolean!
-    createVibe(description: String!): Event!
+    createVibe(description: String!, event_type: String!): Event!
   }
 `;
