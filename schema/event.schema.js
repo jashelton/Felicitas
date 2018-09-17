@@ -44,5 +44,14 @@ export default `
   type Mutation {
     deleteEvent(id: ID!): Boolean!
     createVibe(description: String!): Event!
+    createMoment(
+      description: String!
+      latitude: Float!
+      longitude: Float!
+      title: String!
+      image: String!
+      city: String!
+      country_code: String!
+      region: String!): Event!
   }
 `;

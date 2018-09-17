@@ -92,6 +92,19 @@ export default {
         event_type: "vibe",
         user_id: user.id
       });
+    },
+    createMoment: async (parent, args, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      const moment = await models.Event.create({
+        ...args,
+        event_type: "moment",
+        user_id: user.id
+      });
+      const { latitude, longitude } = moment;
+
+      moment.coordinate = { latitude, longitude };
+      return moment;
     }
   }
 };
