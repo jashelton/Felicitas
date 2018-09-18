@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     action_type: {
-      type: DataTypes.ENUM("spam", "inappropriate")
+      type: DataTypes.ENUM("like", "comment")
     },
     action_by_user_id: {
       type: DataTypes.INTEGER(11),
