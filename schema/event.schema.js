@@ -17,6 +17,7 @@ export default `
     comments_count: Int
     comments: [Comment!]!
     likes_count: Int!
+    has_liked: Boolean
     avg_rating: Float
     current_user_rating: Int
   }

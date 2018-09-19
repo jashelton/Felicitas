@@ -14,6 +14,11 @@ export default {
       models.Like.count({
         where: { event_id: id }
       }),
+    has_liked: ({ id }, args, { models, user }) => {
+      return models.Like.findOne({
+        where: { event_id: id, liked_by_id: user.id }
+      });
+    },
     avg_rating: async ({ id }, args, { models }) => {
       const data = await models.Rating.findAll({
         attributes: [

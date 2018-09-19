@@ -12,7 +12,6 @@ export default `
   }
 
   type Mutation {
-    createLike(event_id: ID!): Event!
-    deleteLike(event_id: ID!): Boolean!
+    toggleLike(event_id: ID!, prevState: Boolean): Event!
   }
 `;
