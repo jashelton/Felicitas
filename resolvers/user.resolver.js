@@ -46,6 +46,17 @@ export default {
       );
 
       return mutualQuery[0].mutual;
+    },
+    mutual: async ({ id }, args, { models }) => {
+      return models.sequelize.query(
+        `
+          select U.* from follows F
+          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          join users U on U.id = F2.followed_id
+          where F.followed_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
     }
   },
   Query: {
@@ -85,8 +96,8 @@ export default {
         where: { user_id },
         raw: true
       }),
-    userFollowers: async (parent, { id }, { models }) => {
-      return await models.sequelize.query(
+    userFollowers: (parent, { id }, { models }) => {
+      return models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.follower_id
@@ -95,12 +106,23 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     },
-    userFollowing: async (parent, { id }, { models }) => {
-      return await models.sequelize.query(
+    userFollowing: (parent, { id }, { models }) => {
+      return models.sequelize.query(
         `
           select * from follows F
           join users U on U.id = F.followed_id
           where F.follower_id = ${id};
+        `,
+        { type: models.sequelize.QueryTypes.SELECT }
+      );
+    },
+    userMutual: (parent, { id }, { models, user }) => {
+      return models.sequelize.query(
+        `
+          select U.* from follows F
+          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          join users U on U.id = F2.followed_id
+          where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );

@@ -12,10 +12,11 @@ export default `
     updated_at: Date!
     events: [Event!]!
     following_count: Int
-    following: [User!]!
+    following: [User]
     followers_count: Int
-    followers: [User!]!
+    followers: [User]
     mutual_count: Int
+    mutual: [User]
     jwt: String!
   }
 
@@ -26,6 +27,7 @@ export default `
     userEvents(user_id: ID!): [Event!]!
     userFollowers(id: ID!): [User!]!
     userFollowing(id: ID!): [User!]!
+    userMutual(id: ID!): [User!]!
   }
 
   type Mutation {

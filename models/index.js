@@ -69,6 +69,38 @@ sequelize.sync({ force: true }).then(() => {
         user_id: 1,
         text: "This is a new comment!"
       });
+    })
+    .then(() => {
+      db.User.create({
+        first_name: "Oliver",
+        last_name: "Queen",
+        facebook_id: "123456789"
+      });
+    })
+    .then(() => {
+      db.User.create({
+        first_name: "Theia",
+        last_name: "Queen",
+        facebook_id: "987654321"
+      });
+    })
+    .then(() => {
+      db.Follow.create({
+        followed_id: 2,
+        follower_id: 1
+      });
+    })
+    .then(() => {
+      db.Follow.create({
+        followed_id: 3,
+        follower_id: 1
+      });
+    })
+    .then(() => {
+      db.Follow.create({
+        followed_id: 1,
+        follower_id: 2
+      });
     });
 });
 

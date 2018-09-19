@@ -66,13 +66,13 @@ export default {
     },
     getEvent: (parent, { id }, { models }) =>
       models.Event.findOne({ where: { id } }),
-    eventComments: async (parent, { event_id }, { models }) =>
+    eventComments: (parent, { event_id }, { models }) =>
       models.sequelize.query(
         `select * from comments where event_id = ${event_id};`,
         { type: models.sequelize.QueryTypes.SELECT }
       ),
-    eventLikes: async (parent, { event_id }, { models }) => {
-      return await models.sequelize.query(
+    eventLikes: (parent, { event_id }, { models }) => {
+      return models.sequelize.query(
         `
           select * from likes L
           join users U on U.id = L.liked_by_id

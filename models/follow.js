@@ -20,8 +20,7 @@ export default (sequelize, DataTypes) => {
         model: "Users",
         key: "id"
       }
-    },
-    following: DataTypes.BOOLEAN
+    }
   });
 
   Follow.associate = models => {
