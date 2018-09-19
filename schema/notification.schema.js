@@ -22,6 +22,6 @@ export default `
   }
 
   type Query {
-    userNotifications: [Notification!]!
+    userNotifications(offset: Int): [Notification!]!
   }
 `;
