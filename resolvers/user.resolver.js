@@ -57,6 +57,11 @@ export default {
         `,
         { type: models.sequelize.QueryTypes.SELECT }
       );
+    },
+    isFollowing: ({ id }, args, { models, user }) => {
+      return models.Follow.findOne({
+        where: { follower_id: user.id, followed_id: id }
+      });
     }
   },
   Query: {

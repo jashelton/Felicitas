@@ -48,7 +48,7 @@ export default `
       description: String!
       latitude: Float!
       longitude: Float!
-      title: String!
+      title: String
       image: String!
       city: String!
       country_code: String!

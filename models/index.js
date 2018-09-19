@@ -92,14 +92,34 @@ sequelize.sync({ force: true }).then(() => {
     })
     .then(() => {
       db.Follow.create({
-        followed_id: 3,
-        follower_id: 1
+        followed_id: 1,
+        follower_id: 2
       });
     })
     .then(() => {
-      db.Follow.create({
-        followed_id: 1,
-        follower_id: 2
+      db.Event.create({
+        user_id: 2,
+        event_type: "moment",
+        description: "This moment is fireeee... pun intended.",
+        latitude: 36.117515,
+        longitude: -115.188159,
+        image: "http://www.gstatic.com/webp/gallery/5.jpg",
+        city: "Las Vegas",
+        country_code: "US",
+        region: "NV"
+      });
+    })
+    .then(() => {
+      db.Event.create({
+        user_id: 3,
+        event_type: "moment",
+        description: "Just chillin'.",
+        latitude: 36.117515,
+        longitude: -115.188159,
+        image: "http://www.gstatic.com/webp/gallery/2.jpg",
+        city: "Las Vegas",
+        country_code: "US",
+        region: "NV"
       });
     });
 });

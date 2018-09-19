@@ -17,6 +17,7 @@ export default `
     followers: [User]
     mutual_count: Int
     mutual: [User]
+    isFollowing: Boolean
     jwt: String!
   }
 
