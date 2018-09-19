@@ -6,4 +6,8 @@ export default `
     created_at: Date!
     updated_at: Date!
   }
+
+  type Mutation {
+    toggleFollowing(forUserId: ID!): User!
+  }
 `;
