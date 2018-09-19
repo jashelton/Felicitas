@@ -37,7 +37,7 @@ export default `
   }
 
   type Query {
-    allEvents(offset: Int, event_type: String): [Event!]!
+    allEvents(offset: Int, event_type: String, user_id: Int): [Event!]!
     getEvent(id: ID!): Event
   }
 

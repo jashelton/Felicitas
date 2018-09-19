@@ -39,14 +39,18 @@ export default {
     }
   },
   Query: {
-    allEvents: async (parent, { offset, event_type }, { models, user }) => {
+    allEvents: async (parent, args, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
+
+      const { offset } = args;
+      const withoutOffset = Object.assign({}, args);
+      delete withoutOffset.offset;
 
       const events = await models.Event.findAll({
         order: models.sequelize.literal("created_at DESC"),
         limit: 20,
         offset,
-        where: event_type ? { event_type } : null
+        where: { ...withoutOffset }
       });
 
       events.map(event => {
