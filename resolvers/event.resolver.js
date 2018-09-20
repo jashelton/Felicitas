@@ -36,7 +36,6 @@ export default {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
       const data = await models.Rating.findOne({
-        attributes: ["value"],
         where: { event_id: id, user_id: user.id }
       });
 

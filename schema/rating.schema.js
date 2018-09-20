@@ -7,4 +7,8 @@ export default `
     created_at: Date!
     updated_at: Date!
   }
+
+  type Mutation {
+    rateEvent(event_id: ID!, value: Int!): Event!
+  }
 `;
