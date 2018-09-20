@@ -41,7 +41,10 @@ export default `
       profile_image: String,
       facebook_id: String!
     ): User
-    updateUser(username: String!, newUsername: String!): [Int!]!
+    updateUser(
+      first_name: String,
+      last_name: String,
+      profile_image: String): User!
     deleteUser(id: Int!): Int!
   }
 `;

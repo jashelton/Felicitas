@@ -135,8 +135,11 @@ export default {
   },
   Mutation: {
     createUser: (parent, args, { models }) => models.User.create(args),
-    updateUser: (parent, { username, newUsername }, { models }) =>
-      models.User.update({ username: newUsername }, { where: { username } }),
+    updateUser: async (parent, args, { models, user }) => {
+      console.log({ ...args });
+      await models.User.update({ ...args }, { where: { id: user.id } });
+      return models.User.findById(user.id);
+    },
     deleteUser: (parent, args, { models }) =>
       models.User.destroy({ where: args })
   }
