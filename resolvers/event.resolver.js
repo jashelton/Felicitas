@@ -87,11 +87,11 @@ export default {
     }
   },
   Mutation: {
-    deleteEvent: (parent, { id }, { models, user }) =>
-      models.Event.destroy({
-        where: { id, user_id: user.id },
-        cascade: true
-      }),
+    deleteEvent: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      return models.Event.destroy({ where: { id, user_id: user.id } });
+    },
     createVibe: (parent, { description }, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
