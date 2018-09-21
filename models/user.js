@@ -30,6 +30,7 @@ export default (sequelize, DataTypes) => {
   User.associate = models => {
     User.hasMany(models.Event);
     User.hasMany(models.Comment);
+    User.hasMany(models.Report);
   };
 
   return User;

@@ -121,6 +121,13 @@ sequelize.sync({ force: true }).then(() => {
         country_code: "US",
         region: "NV"
       });
+    })
+    .then(() => {
+      db.Report.create({
+        user_id: 1,
+        event_id: 2,
+        reason: "spam"
+      });
     });
 });
 

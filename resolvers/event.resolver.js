@@ -1,4 +1,6 @@
 import { AuthenticationError } from "apollo-server";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 
 export default {
   Event: {
@@ -51,10 +53,31 @@ export default {
       delete withoutOffset.offset;
 
       const events = await models.Event.findAll({
+        include: [
+          {
+            model: models.Report,
+            on: {
+              event_id: models.sequelize.where(
+                models.sequelize.col("Reports.event_id"),
+                "=",
+                models.sequelize.col("Event.id")
+              ),
+              user_id: models.sequelize.where(
+                models.sequelize.col("Reports.user_id"),
+                "=",
+                user.id
+              )
+            },
+            duplicating: false
+          }
+        ],
         order: models.sequelize.literal("created_at DESC"),
         limit: 20,
         offset,
-        where: { ...withoutOffset }
+        where: {
+          ...withoutOffset,
+          "$Reports.id$": { [Op.eq]: null }
+        }
       });
 
       events.map(event => {

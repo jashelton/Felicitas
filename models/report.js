@@ -27,7 +27,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Report.associate = models => {
-    Report.belongsTo(models.Event);
+    // Report.belongsTo(models.Event);
+    Report.belongsTo(models.User);
   };
 
   return Report;
