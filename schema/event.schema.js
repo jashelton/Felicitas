@@ -20,11 +20,19 @@ export default `
     has_liked: Boolean
     avg_rating: Float
     current_user_rating: Int
+    Images: [Image]
   }
 
   type Coordinate {
     latitude: Float
     longitude: Float
+  }
+
+  type Image {
+    id: Int
+    user_id: Int
+    event_id: Int
+    image: String
   }
 
   enum Privacy {

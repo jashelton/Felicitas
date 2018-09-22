@@ -6,7 +6,7 @@ const sequelize = new Sequelize(
   process.env.MONETA_USER,
   process.env.MONETA_PASSWORD,
   {
-    host: "localhost",
+    host: process.env.MONETA_HOST,
     dialect: "mysql",
     define: { underscored: true },
     pool: {
@@ -27,7 +27,8 @@ const db = {
   Rating: sequelize.import("./rating"),
   Report: sequelize.import("./report"),
   Notification: sequelize.import("./notification"),
-  EventView: sequelize.import("./event-view")
+  EventView: sequelize.import("./event-view"),
+  Image: sequelize.import("./image")
 };
 
 Object.keys(db).forEach(modelName => {
@@ -60,6 +61,18 @@ sequelize.sync({ force: true }).then(() => {
           city: "Durham",
           country_code: "US",
           region: "NC"
+        }).then(({ dataValues }) => {
+          db.Image.create({
+            user_id: 1,
+            event_id: dataValues.id,
+            image: "http://www.gstatic.com/webp/gallery/1.jpg"
+          }).then(() => {
+            db.Image.create({
+              user_id: 1,
+              event_id: dataValues.id,
+              image: "http://www.gstatic.com/webp/gallery/3.jpg"
+            });
+          });
         });
       });
     })
@@ -107,6 +120,12 @@ sequelize.sync({ force: true }).then(() => {
         city: "Las Vegas",
         country_code: "US",
         region: "NV"
+      }).then(({ dataValues }) => {
+        db.Image.create({
+          user_id: 2,
+          event_id: dataValues.id,
+          image: "http://www.gstatic.com/webp/gallery/5.jpg"
+        });
       });
     })
     .then(() => {
@@ -120,6 +139,12 @@ sequelize.sync({ force: true }).then(() => {
         city: "Las Vegas",
         country_code: "US",
         region: "NV"
+      }).then(({ dataValues }) => {
+        db.Image.create({
+          user_id: 3,
+          event_id: dataValues.id,
+          image: "http://www.gstatic.com/webp/gallery/2.jpg"
+        });
       });
     })
     .then(() => {

@@ -31,6 +31,7 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Event);
     User.hasMany(models.Comment);
     User.hasMany(models.Report);
+    User.hasMany(models.Image);
   };
 
   return User;

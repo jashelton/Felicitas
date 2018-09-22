@@ -42,7 +42,9 @@ export default {
       });
 
       return data ? data.dataValues.value : null;
-    }
+    },
+    Images: ({ id }, args, { models }) =>
+      models.Image.findAll({ where: { event_id: id } })
   },
   Query: {
     allEvents: async (parent, args, { models, user }) => {
@@ -91,8 +93,11 @@ export default {
 
       return events;
     },
-    getEvent: (parent, { id }, { models }) =>
-      models.Event.findOne({ where: { id } }),
+    getEvent: (parent, { id }, { models }) => {
+      return models.Event.findOne({
+        where: { id }
+      });
+    },
     eventComments: (parent, { event_id }, { models }) =>
       models.sequelize.query(
         `select * from comments where event_id = ${event_id};`,
@@ -132,9 +137,16 @@ export default {
         event_type: "moment",
         user_id: user.id
       });
-      const { latitude, longitude } = moment;
 
+      await models.Image.create({
+        event_id: moment.id,
+        user_id: user.id,
+        image: args.image
+      });
+
+      const { latitude, longitude } = moment;
       moment.coordinate = { latitude, longitude };
+
       return moment;
     }
   }
