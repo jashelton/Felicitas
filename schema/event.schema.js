@@ -58,7 +58,8 @@ export default `
       latitude: Float!
       longitude: Float!
       title: String
-      image: String!
+      image: String
+      images: [String]
       city: String!
       country_code: String!
       region: String!): Event!

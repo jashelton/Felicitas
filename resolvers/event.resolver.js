@@ -138,11 +138,15 @@ export default {
         user_id: user.id
       });
 
-      await models.Image.create({
-        event_id: moment.id,
-        user_id: user.id,
-        image: args.image
+      const images = args.images.map(img => {
+        return {
+          image: img,
+          event_id: moment.id,
+          user_id: user.id
+        };
       });
+
+      await models.Image.bulkCreate(images);
 
       const { latitude, longitude } = moment;
       moment.coordinate = { latitude, longitude };
