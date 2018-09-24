@@ -131,6 +131,9 @@ export default {
     },
     createMoment: async (parent, args, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
+      console.log("----------ARGS----------");
+      console.log(args.images);
+      console.log("----------ARGS----------");
 
       const moment = await models.Event.create({
         ...args,
