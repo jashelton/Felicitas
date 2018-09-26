@@ -24,7 +24,9 @@ export default (sequelize, DataTypes) => {
     image: {
       type: DataTypes.STRING,
       allow_null: false
-    }
+    },
+    latitude: DataTypes.DECIMAL(10, 6),
+    longitude: DataTypes.DECIMAL(10, 6),
   });
 
   Image.associate = models => {

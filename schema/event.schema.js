@@ -33,6 +33,14 @@ export default `
     user_id: Int
     event_id: Int
     image: String
+    longitude: Float
+    latitude: Float
+  }
+
+  input ImageInput {
+    image: String
+    longitude: Float
+    latitude: Float
   }
 
   enum Privacy {
@@ -59,7 +67,7 @@ export default `
       longitude: Float!
       title: String
       image: String
-      images: [String]
+      images: [ImageInput]
       city: String!
       country_code: String!
       region: String!): Event!
