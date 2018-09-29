@@ -7,6 +7,7 @@ export default `
     created_at: Date
     updated_at: Date
     comment_user: User
+    owner: User
   }
 
   type Query {

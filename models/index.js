@@ -91,13 +91,6 @@ sequelize.sync({ force: true }).then(() => {
       });
     })
     .then(() => {
-      db.User.create({
-        first_name: "Theia",
-        last_name: "Queen",
-        facebook_id: "987654321"
-      });
-    })
-    .then(() => {
       db.Follow.create({
         followed_id: 2,
         follower_id: 1
@@ -125,25 +118,6 @@ sequelize.sync({ force: true }).then(() => {
           user_id: 2,
           event_id: dataValues.id,
           image: "http://www.gstatic.com/webp/gallery/5.jpg"
-        });
-      });
-    })
-    .then(() => {
-      db.Event.create({
-        user_id: 3,
-        event_type: "moment",
-        description: "Just chillin'.",
-        latitude: 36.117515,
-        longitude: -115.188159,
-        image: "http://www.gstatic.com/webp/gallery/2.jpg",
-        city: "Las Vegas",
-        country_code: "US",
-        region: "NV"
-      }).then(({ dataValues }) => {
-        db.Image.create({
-          user_id: 3,
-          event_id: dataValues.id,
-          image: "http://www.gstatic.com/webp/gallery/2.jpg"
         });
       });
     })

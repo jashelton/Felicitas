@@ -14,8 +14,9 @@ export default (sequelize, DataTypes) => {
       push_token: DataTypes.STRING,
       profile_image: DataTypes.STRING,
       facebook_id: {
-        type: DataTypes.STRING,
-        allow_null: false
+        type: DataTypes.BIGINT,
+        allow_null: false,
+        unique: true
       }
     },
     {

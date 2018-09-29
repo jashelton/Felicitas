@@ -2,6 +2,10 @@ export default {
   Comment: {
     comment_user: ({ user_id }, args, { models }) => {
       return models.User.findById(user_id);
+    },
+    owner: async ({ event_id }, args, { models }) => {
+      const { user_id } = await models.Event.findById(event_id);
+      return models.User.findById(user_id);
     }
   },
   Mutation: {
