@@ -27,7 +27,6 @@ const db = {
   Rating: sequelize.import("./rating"),
   Report: sequelize.import("./report"),
   Notification: sequelize.import("./notification"),
-  EventView: sequelize.import("./event-view"),
   Image: sequelize.import("./image")
 };
 
