@@ -77,24 +77,24 @@ export default {
     },
     getUser: (parent, { id }, { models }) =>
       models.User.findOne({ where: { id } }),
-    facebookUser: async (parent, { id }, { models }) => {
-      const { dataValues } = await models.User.findOne({
-        where: { facebook_id: id }
+    facebookUser: async (parent, { facebook_id }, { models }) => {
+      const user = await models.User.findOne({
+        where: { facebook_id }
       });
 
-      if (dataValues) {
+      if (user) {
         const token = jwt.sign(
           {
-            id: dataValues.id,
-            fb_id: dataValues.facebook_id
+            id: user.dataValues.id,
+            fb_id: user.dataValues.facebook_id
           },
           process.env.JWT_SECRET
         );
 
-        dataValues.jwt = token;
-        return dataValues;
+        user.dataValues.jwt = token;
+        return user.dataValues;
       }
-      return { message: "There is no user." };
+      return null;
     },
     userEvents: (parent, { user_id }, { models }) =>
       models.Event.findAll({
@@ -134,9 +134,14 @@ export default {
     }
   },
   Mutation: {
-    createUser: (parent, args, { models }) => models.User.create(args),
+    createUser: async (parent, args, { models }) =>
+      models.User.create({ ...args }),
     updateUser: async (parent, args, { models, user }) => {
       await models.User.update({ ...args }, { where: { id: user.id } });
+      return models.User.findById(user.id);
+    },
+    setPushToken: async (parent, { push_token }, { models, user }) => {
+      await models.User.update({ push_token }, { where: { id: user.id } });
       return models.User.findById(user.id);
     },
     deleteUser: (parent, args, { models }) =>
