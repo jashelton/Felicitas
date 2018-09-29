@@ -18,6 +18,7 @@ export default `
     createComment(
       event_id: ID!
       text: String!
+      action_for_user_id: ID!
     ): Comment
   }
 `;

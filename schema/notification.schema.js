@@ -9,6 +9,7 @@ export default `
     created_at: Date
     updated_at: Date
     event: Event!
+    actor: User!
   }
 
   enum ActionType {
