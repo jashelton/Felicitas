@@ -121,13 +121,6 @@ sequelize.sync({ force: true }).then(() => {
       });
     })
     .then(() => {
-      db.Report.create({
-        user_id: 1,
-        event_id: 2,
-        reason: "spam"
-      });
-    })
-    .then(() => {
       db.User.create({
         first_name: "Theia",
         last_name: "Queen",
