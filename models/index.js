@@ -127,6 +127,13 @@ sequelize.sync({ force: true }).then(() => {
         event_id: 2,
         reason: "spam"
       });
+    })
+    .then(() => {
+      db.User.create({
+        first_name: "Theia",
+        last_name: "Queen",
+        facebook_id: "132119937714927"
+      });
     });
 });
 
