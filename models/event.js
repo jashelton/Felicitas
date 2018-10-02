@@ -18,7 +18,8 @@ export default (sequelize, DataTypes) => {
       allow_null: false
     },
     description: DataTypes.STRING,
-    privacy: DataTypes.ENUM("public", "private"),
+    display_on_map: DataTypes.BOOLEAN,
+    has_randomized_location: DataTypes.BOOLEAN,
     latitude: DataTypes.DECIMAL(10, 6),
     longitude: DataTypes.DECIMAL(10, 6),
     title: DataTypes.STRING,

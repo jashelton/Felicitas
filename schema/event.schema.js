@@ -4,6 +4,7 @@ export default `
     user_id: Int!
     event_type: EventType
     description: String
+    has_randomized_location: Boolean
     privacy: Privacy
     coordinate: Coordinate
     title: String
@@ -54,7 +55,13 @@ export default `
   }
 
   type Query {
-    allEvents(offset: Int, event_type: String, user_id: Int): [Event!]!
+    allEvents(
+      offset: Int,
+      event_type: String,
+      user_id: Int,
+      display_on_map: Boolean,
+      has_randomized_location: Boolean
+    ): [Event!]!
     getEvent(id: ID!): Event
   }
 
@@ -63,6 +70,8 @@ export default `
     createVibe(description: String!): Event!
     createMoment(
       description: String!
+      display_on_map: Boolean
+      has_randomized_location: Boolean
       latitude: Float!
       longitude: Float!
       title: String
