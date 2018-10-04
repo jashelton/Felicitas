@@ -30,13 +30,12 @@ export default (sequelize, DataTypes) => {
   });
 
   Event.associate = models => {
+    Event.belongsTo(models.User);
     Event.hasMany(models.Like, { onDelete: "CASCADE" });
     Event.hasMany(models.Report, { onDelete: "CASCADE" });
     Event.hasMany(models.Comment, { onDelete: "CASCADE" });
     Event.hasMany(models.Rating, { onDelete: "CASCADE" });
-    Event.belongsTo(models.User);
     Event.hasMany(models.Image, { onDelete: "CASCADE" });
-    // 1 to many with Event
   };
 
   return Event;

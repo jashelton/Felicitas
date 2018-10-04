@@ -21,19 +21,6 @@ export default {
         where: { event_id: id, liked_by_id: user.id }
       });
     },
-    avg_rating: async ({ id }, args, { models }) => {
-      const data = await models.Rating.findAll({
-        attributes: [
-          [
-            models.sequelize.fn("AVG", models.sequelize.col("value")),
-            "avg_rating"
-          ]
-        ],
-        where: { event_id: id }
-      });
-
-      return data[0].dataValues.avg_rating;
-    },
     current_user_rating: async ({ id }, args, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
@@ -50,14 +37,45 @@ export default {
     allEvents: async (parent, args, { models, user }) => {
       if (!user) throw new AuthenticationError("Unauthorized!");
 
-      const { offset } = args;
+      const { offset, rating_threshold } = args;
       const withoutOffset = Object.assign({}, args);
       delete withoutOffset.offset;
+      delete withoutOffset.rating_threshold;
 
       const events = await models.Event.findAll({
+        attributes: [
+          "id",
+          "user_id",
+          "event_type",
+          "description",
+          "display_on_map",
+          "has_randomized_location",
+          "latitude",
+          "longitude",
+          "title",
+          "city",
+          "country_code",
+          "region",
+          "created_at",
+          "updated_at",
+          [
+            models.sequelize.fn("AVG", models.sequelize.col("Ratings.value")),
+            "avg_rating"
+          ],
+          [
+            models.sequelize.fn("COUNT", models.sequelize.col("Ratings.id")),
+            "ratings_count"
+          ]
+        ],
         include: [
           {
+            model: models.Rating,
+            attributes: [],
+            duplicating: false
+          },
+          {
             model: models.Report,
+            attributes: [],
             on: {
               event_id: models.sequelize.where(
                 models.sequelize.col("Reports.event_id"),
@@ -73,9 +91,16 @@ export default {
             duplicating: false
           }
         ],
-        order: models.sequelize.literal("created_at DESC"),
+        group: ["id"],
+        order: models.sequelize.literal("Event.created_at DESC"),
         limit: 20,
         offset,
+        having: {
+          [Op.or]: {
+            avg_rating: { [Op.gte]: rating_threshold },
+            ratings_count: { [Op.lte]: 10 }
+          }
+        },
         where: {
           ...withoutOffset,
           "$Reports.id$": { [Op.eq]: null }
@@ -91,7 +116,7 @@ export default {
         }
       });
 
-      return events;
+      return events.map(e => e.get({ plain: true }));
     },
     getEvent: (parent, { id }, { models }) => {
       return models.Event.findOne({

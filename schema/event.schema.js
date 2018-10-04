@@ -20,6 +20,7 @@ export default `
     likes_count: Int!
     has_liked: Boolean
     avg_rating: Float
+    ratings_count: Int
     current_user_rating: Int
     Images: [Image]
   }
@@ -61,6 +62,7 @@ export default `
       user_id: Int,
       display_on_map: Boolean,
       has_randomized_location: Boolean
+      rating_threshold: Float
     ): [Event!]!
     getEvent(id: ID!): Event
   }

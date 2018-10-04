@@ -37,6 +37,9 @@ Object.keys(db).forEach(modelName => {
 });
 
 sequelize.sync({ force: true }).then(() => {
+  sequelize.query(
+    `SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`
+  );
   db.User.create({
     first_name: "Justin",
     last_name: "Shelton",
