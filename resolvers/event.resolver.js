@@ -107,15 +107,6 @@ export default {
         }
       });
 
-      events.map(event => {
-        if (event.event_type === "moment") {
-          event.coordinate = {
-            latitude: event.latitude,
-            longitude: event.longitude
-          };
-        }
-      });
-
       return events.map(e => e.get({ plain: true }));
     },
     getEvent: (parent, { id }, { models }) => {

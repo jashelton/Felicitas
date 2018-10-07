@@ -9,7 +9,11 @@ export default (sequelize, DataTypes) => {
       },
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allow_null: false,
+        unique: true
+      },
       username: DataTypes.STRING,
       push_token: DataTypes.STRING,
       profile_image: DataTypes.STRING,
