@@ -117,7 +117,7 @@ export default {
     },
     eventComments: (parent, { event_id }, { models }) =>
       models.sequelize.query(
-        `select * from comments where event_id = ${event_id};`,
+        `select * from Comments where event_id = ${event_id};`,
         { type: models.sequelize.QueryTypes.SELECT }
       ),
     eventLikes: (parent, { event_id }, { models }) => {
