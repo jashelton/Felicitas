@@ -123,7 +123,7 @@ export default {
     eventLikes: (parent, { event_id }, { models }) => {
       return models.sequelize.query(
         `
-          select * from likes L
+          select * from Likes L
           join Users U on U.id = L.liked_by_id
           where L.event_id = ${event_id};
         `,
