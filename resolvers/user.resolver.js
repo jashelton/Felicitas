@@ -14,8 +14,8 @@ export default {
     following: async ({ id }, args, { models }) => {
       return await models.sequelize.query(
         `
-          select * from follows F
-          join users U on U.id = F.followed_id
+          select * from Follows F
+          join Users U on U.id = F.followed_id
           where F.follower_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -28,8 +28,8 @@ export default {
     followers: async ({ id }, args, { models }) => {
       return await models.sequelize.query(
         `
-          select * from follows F
-          join users U on U.id = F.follower_id
+          select * from Follows F
+          join Users U on U.id = F.follower_id
           where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -38,8 +38,8 @@ export default {
     mutual_count: async ({ id }, args, { models }) => {
       const mutualQuery = await models.sequelize.query(
         `
-          select count(F.id) as mutual from follows F
-          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          select count(F.id) as mutual from Follows F
+          join Follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
           where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -50,9 +50,9 @@ export default {
     mutual: async ({ id }, args, { models }) => {
       return models.sequelize.query(
         `
-          select U.* from follows F
-          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
-          join users U on U.id = F2.followed_id
+          select U.* from Follows F
+          join Follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          join Users U on U.id = F2.followed_id
           where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -69,7 +69,7 @@ export default {
       return models.sequelize.query(
         `
           select *
-          from users
+          from Users
           where concat(first_name, ' ', last_name) rlike '${name}';
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -104,8 +104,8 @@ export default {
     userFollowers: (parent, { id }, { models }) => {
       return models.sequelize.query(
         `
-          select * from follows F
-          join users U on U.id = F.follower_id
+          select * from Follows F
+          join Users U on U.id = F.follower_id
           where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -114,8 +114,8 @@ export default {
     userFollowing: (parent, { id }, { models }) => {
       return models.sequelize.query(
         `
-          select * from follows F
-          join users U on U.id = F.followed_id
+          select * from Follows F
+          join Users U on U.id = F.followed_id
           where F.follower_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
@@ -124,9 +124,9 @@ export default {
     userMutual: (parent, { id }, { models, user }) => {
       return models.sequelize.query(
         `
-          select U.* from follows F
-          join follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
-          join users U on U.id = F2.followed_id
+          select U.* from Follows F
+          join Follows F2 on F.follower_id = F2.followed_id and F.followed_id = F2.follower_id
+          join Users U on U.id = F2.followed_id
           where F.followed_id = ${id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
