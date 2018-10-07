@@ -107,6 +107,7 @@ export default {
         }
       });
 
+      if (!events.length) return [];
       return events.map(e => e.get({ plain: true }));
     },
     getEvent: (parent, { id }, { models }) => {
@@ -123,7 +124,7 @@ export default {
       return models.sequelize.query(
         `
           select * from likes L
-          join users U on U.id = L.liked_by_id
+          join Users U on U.id = L.liked_by_id
           where L.event_id = ${event_id};
         `,
         { type: models.sequelize.QueryTypes.SELECT }
