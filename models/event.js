@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.ENUM("moment", "vibe"),
         allow_null: false
       },
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       display_on_map: DataTypes.BOOLEAN,
       has_randomized_location: DataTypes.BOOLEAN,
       latitude: DataTypes.DECIMAL(10, 6),
@@ -37,6 +37,12 @@ export default (sequelize, DataTypes) => {
             latitude: this.get("latitude"),
             longitude: this.get("longitude")
           };
+        }
+      },
+      setterMethods: {
+        coordinate(value) {
+          this.setDataValue("longitude", value.longitude);
+          this.setDataValue("latitude", value.latitude);
         }
       }
     }
