@@ -12,6 +12,6 @@ export default `
   }
 
   type Mutation {
-    toggleLike(event_id: ID!, action_for_user_id: ID!): Event!
+    toggleLike(event_id: ID!, action_for_user_id: Int!): Event!
   }
 `;

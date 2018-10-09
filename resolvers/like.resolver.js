@@ -15,6 +15,7 @@ export default {
         });
       } else {
         await models.Like.create({ event_id, liked_by_id: user.id });
+
         if (action_for_user_id !== user.id) {
           models.Notification.create({
             event_id,
