@@ -110,17 +110,24 @@ export default {
       if (!events.length) return [];
       return events.map(e => e.get({ plain: true }));
     },
-    getEvent: (parent, { id }, { models }) => {
+    getEvent: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.Event.findOne({
         where: { id }
       });
     },
-    eventComments: (parent, { event_id }, { models }) =>
-      models.sequelize.query(
+    eventComments: (parent, { event_id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      return models.sequelize.query(
         `select * from Comments where event_id = ${event_id};`,
         { type: models.sequelize.QueryTypes.SELECT }
-      ),
-    eventLikes: (parent, { event_id }, { models }) => {
+      );
+    },
+    eventLikes: (parent, { event_id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.sequelize.query(
         `
           select * from Likes L

@@ -1,3 +1,5 @@
+import { AuthenticationError } from "apollo-server";
+
 export default {
   Comment: {
     comment_user: ({ user_id }, args, { models }) => {
@@ -14,6 +16,8 @@ export default {
       { event_id, text, action_for_user_id },
       { models, user }
     ) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       if (action_for_user_id !== user.id) {
         models.Notification.create({
           event_id,

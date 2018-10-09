@@ -1,3 +1,5 @@
+import { AuthenticationError } from "apollo-server";
+
 export default {
   Mutation: {
     toggleLike: async (
@@ -5,6 +7,8 @@ export default {
       { event_id, action_for_user_id },
       { models, user }
     ) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       const exists = await models.Like.findOne({
         where: { event_id, liked_by_id: user.id }
       });

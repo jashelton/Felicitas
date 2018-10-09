@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
+import { AuthenticationError } from "apollo-server";
 
 export default {
   User: {
@@ -65,7 +66,9 @@ export default {
     }
   },
   Query: {
-    allUsers: (parent, { name }, { models }) => {
+    allUsers: (parent, { name }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.sequelize.query(
         `
           select *
@@ -75,8 +78,11 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     },
-    getUser: (parent, { id }, { models }) =>
-      models.User.findOne({ where: { id } }),
+    getUser: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      return models.User.findOne({ where: { id } });
+    },
     facebookUser: async (parent, { facebook_id }, { models }) => {
       const user = await models.User.findOne({
         where: { facebook_id }
@@ -96,12 +102,17 @@ export default {
       }
       return null;
     },
-    userEvents: (parent, { user_id }, { models }) =>
-      models.Event.findAll({
+    userEvents: (parent, { user_id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
+      return models.Event.findAll({
         where: { user_id },
         raw: true
-      }),
-    userFollowers: (parent, { id }, { models }) => {
+      });
+    },
+    userFollowers: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.sequelize.query(
         `
           select * from Follows F
@@ -111,7 +122,9 @@ export default {
         { type: models.sequelize.QueryTypes.SELECT }
       );
     },
-    userFollowing: (parent, { id }, { models }) => {
+    userFollowing: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.sequelize.query(
         `
           select * from Follows F
@@ -122,6 +135,8 @@ export default {
       );
     },
     userMutual: (parent, { id }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       return models.sequelize.query(
         `
           select U.* from Follows F
@@ -134,17 +149,18 @@ export default {
     }
   },
   Mutation: {
-    createUser: async (parent, args, { models }) =>
-      models.User.create({ ...args }),
+    createUser: async (parent, args, { models, user }) => {
+      return models.User.create({ ...args });
+    },
     updateUser: async (parent, args, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       await models.User.update({ ...args }, { where: { id: user.id } });
       return models.User.findById(user.id);
     },
     setPushToken: async (parent, { push_token }, { models, user }) => {
       await models.User.update({ push_token }, { where: { id: user.id } });
       return models.User.findById(user.id);
-    },
-    deleteUser: (parent, args, { models }) =>
-      models.User.destroy({ where: args })
+    }
   }
 };

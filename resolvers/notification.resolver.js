@@ -1,3 +1,5 @@
+import { AuthenticationError } from "apollo-server";
+
 export default {
   Notification: {
     event: ({ event_id }, args, { models }) => models.Event.findById(event_id),

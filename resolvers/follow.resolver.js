@@ -1,6 +1,10 @@
+import { AuthenticationError } from "apollo-server";
+
 export default {
   Mutation: {
     toggleFollowing: async (parent, { forUserId }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       const exists = await models.Follow.findOne({
         where: { followed_id: forUserId, follower_id: user.id }
       });

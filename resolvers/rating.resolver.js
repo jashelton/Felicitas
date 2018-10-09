@@ -1,6 +1,10 @@
+import { AuthenticationError } from "apollo-server";
+
 export default {
   Mutation: {
     rateEvent: async (parent, { event_id, value }, { models, user }) => {
+      if (!user) throw new AuthenticationError("Unauthorized!");
+
       const exists = await models.Rating.findOne({
         where: { event_id, user_id: user.id }
       });
