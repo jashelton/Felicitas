@@ -57,12 +57,13 @@ export default `
 
   type Query {
     allEvents(
-      offset: Int,
-      event_type: String,
-      user_id: Int,
-      display_on_map: Boolean,
+      offset: Int
+      event_type: String
+      user_id: Int
+      display_on_map: Boolean
       has_randomized_location: Boolean
       rating_threshold: Float
+      following: Boolean
     ): [Event!]!
     getEvent(id: ID!): Event
   }
