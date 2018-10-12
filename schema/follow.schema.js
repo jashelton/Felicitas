@@ -8,6 +8,6 @@ export default `
   }
 
   type Mutation {
-    toggleFollowing(forUserId: ID!): User!
+    toggleFollowing(forUserId: Int!): User!
   }
 `;

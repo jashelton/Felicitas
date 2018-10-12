@@ -24,14 +24,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Follow.associate = models => {
-    Follow.belongsTo(models.User, {
-      foreignKey: "followed_id",
-      through: "followed_id"
-    });
-    Follow.belongsTo(models.User, {
-      foreignKey: "follower_id",
-      through: "follower_id"
-    });
+    Follow.belongsTo(models.User, { foreignKey: "followed_id" });
+    Follow.belongsTo(models.User, { foreignKey: "follower_id" });
   };
 
   return Follow;
