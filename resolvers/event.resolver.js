@@ -41,6 +41,21 @@ export default {
       const withoutOffset = Object.assign({}, args);
       delete withoutOffset.offset;
       delete withoutOffset.rating_threshold;
+      delete withoutOffset.following; // TODO: Remove this when ready
+
+      let where = {
+        ...withoutOffset,
+        "$Reports.id$": { [Op.eq]: null }
+      };
+
+      if (args.following)
+        where = {
+          ...where,
+          [Op.or]: {
+            "$User->Follows.followed_id$": { [Op.not]: null },
+            "$Event.user_id$": user.id
+          }
+        };
 
       const events = await models.Event.findAll({
         attributes: [
@@ -89,9 +104,33 @@ export default {
               )
             },
             duplicating: false
+          },
+          {
+            model: models.User,
+            attributes: [],
+            duplicating: false,
+            include: [
+              {
+                model: models.Follow,
+                attributes: [],
+                on: {
+                  follower_id: models.sequelize.where(
+                    models.sequelize.col("User->Follows.follower_id"),
+                    "=",
+                    user.id
+                  ),
+                  followed_id: models.sequelize.where(
+                    models.sequelize.col("User->Follows.followed_id"),
+                    "=",
+                    models.sequelize.col("User.id")
+                  )
+                },
+                duplicating: false
+              }
+            ]
           }
         ],
-        group: ["id"],
+        group: ["Event.id"],
         order: models.sequelize.literal("Event.created_at DESC"),
         limit: 20,
         offset,
@@ -101,10 +140,7 @@ export default {
             ratings_count: { [Op.lte]: 10 }
           }
         },
-        where: {
-          ...withoutOffset,
-          "$Reports.id$": { [Op.eq]: null }
-        }
+        where
       });
 
       if (!events.length) return [];

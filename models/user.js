@@ -37,6 +37,7 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Comment);
     User.hasMany(models.Report);
     User.hasMany(models.Image);
+    User.hasMany(models.Follow, { foreignKey: "followed_id" });
   };
 
   return User;
